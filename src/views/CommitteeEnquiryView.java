@@ -5,6 +5,7 @@ import models.Camp;
 import models.CommitteeMember;
 import models.Enquiry;
 import models.Student;
+import utils.PrintUtil;
 import interfaces.dao.CurrentUserDao;
 import interfaces.dao.StudentDao;
 import dao.CurrentUserDaoImpl;
@@ -23,15 +24,19 @@ public class CommitteeEnquiryView implements EnquiryViewable {
         Camp facilitatingCamp = campDao.getCamps().get(committeeMember.getFacilitatingCamp());
         StudentDao studentDao = new StudentDaoImpl();
         Map<String, Student> studentsMap = studentDao.getStudents();
-        System.out.printf("===== (Facilitating Camp Enquiries) %s =====\n", facilitatingCamp.getName());
+        PrintUtil.header("Facilitating Camp Enquiries");
         for (Enquiry enq : facilitatingCamp.getEnquiries().values()) {
-            System.out.printf("***** Enquiry %d from %s *****\n", enq.getEnquiryID(),
-                    studentsMap.get(enq.getEnquirer()));
-            System.out.printf("%s\n", enq.getEnquiry());
+            System.out.println("-".repeat(29));
+            System.out.printf("%-10s: %s\n", "Enquiry ID", enq.getEnquiryID());
+            System.out.printf("%-10s: %s\n", "Enquirer", studentsMap.get(enq.getEnquirer()));
+            System.out.printf("%-10s: %s\n", "Camp", facilitatingCamp.getName());
+            System.out.printf("%-10s: %s\n", "Enquiry", enq.getEnquiry());
             if (enq.getReplier() != null) {
-                System.out.printf("~~~~~ Reply by: %s ~~~~~\n", enq.getReplier());
-                System.out.printf("%s\n", enq.getReply());
+                System.out.printf("%-10s: %s\n", "Replier", enq.getReplier());
+                System.out.printf("%-10s: %s\n", "Reply", enq.getReply());
             }
+            System.out.println();
         }
+
     }
 }
